@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Weather</title>
+    </head>
+    <body>
+        <button type="button" onclick="loadXMLDoc()">Get days</button>
+        <br><br>
+        <table id="days"></table>
+		
+		<XML ID="xmlDays">
+			<?xml version="1.0"?>
+			<Day>
+				<day>
+					<date>2020-10-24</date>
+					<maxTemperature>14</maxTemperature>
+					<minTemperature>4</minTemperature>
+					<w_Event>Scattered showers</w_Event>
+				</day>
+				<day>
+					<date>2020-10-25</date>
+					<maxTemperature>9</maxTemperature>
+					<minTemperature>2</minTemperature>
+					<w_Event>Rain</w_Event>
+				</day>
+				<day>
+					<date>2020-10-26</date>
+					<maxTemperature>6</maxTemperature>
+					<minTemperature>-2</minTemperature>
+					<w_Event>Partly cloudy</w_Event>
+				</day>
+			</Day>
+		</XML>
+
+        <script>
+            function loadXMLDoc() {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadstatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        myFunction(this);
+                    }
+                };
+                xmlhttp.open("GET", "xmlDays">", true);
+                xmlhttp.send();
+            }
+            function myFunction(xml){
+				var i;
+				var xmlDoc = xml.responseXML;
+				var table = "<tr><th>Date</th><th>Max</th><th>Min</th><th>Event</th></tr>";
+				var x = xmlDoc.getElementsByTagName("day");
+				for (i = 0; i < x.length; i++) {
+					table +=
+					"<tr><td>" +
+					x[i].getElementsByTagName("date")[0].childNodes[0].nodeValue +
+					"</td><td>" +
+					x[i].getElementsByTagName("maxTemperature")[0].childNodes[0].nodeValue +
+					"</td><td>" +
+					x[i].getElementsByTagName("minTemperature")[0].childNodes[0].nodeValue +
+					"</td><td>" +
+					x[i].getElementsByTagName("w_Event")[0].childNodes[0].nodeValue +
+					"</td></tr>";
+				}
+				document.getElementById("days").innerHTML = table;
+			}
+        </script>
+    </body>
+</html>
